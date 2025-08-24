@@ -75,7 +75,18 @@ export default function Checkout() {
           </div>
 
           <div className="mt-8 text-center">
-            <PrimaryButton onClick={() => navigate('/payment')} className="w-full max-w-sm justify-center">
+            <PrimaryButton 
+              onClick={() => navigate('/payment', { 
+                state: { 
+                  cart, 
+                  totalPrice, 
+                  reportCost, 
+                  finalTotalPrice,
+                  fromMedicineDispensing: true
+                } 
+              })} 
+              className="w-full max-w-sm justify-center"
+            >
               Proceed to Payment
             </PrimaryButton>
             <button onClick={() => navigate(-1)} className="mt-4 text-sm text-gray-600 hover:text-orange-500">

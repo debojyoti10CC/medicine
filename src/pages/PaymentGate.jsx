@@ -1,17 +1,32 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Logo from "../components/Logo";
 import TopEllipseBackground from "../components/TopEllipseBackground";
 
 const PaymentGate = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get payment data from location state
+  const { cart = [], totalPrice = 0, reportCost = 500, finalTotalPrice = 500, fromMedicineDispensing = false } = location.state || {};
 
   const startPayment = () => {
     // ✅ Mock payment flow (no Razorpay)
     console.log("🛠️ Simulating payment...");
     setTimeout(() => {
       console.log("✅ Mock Payment Success");
-      navigate("/report"); // Go to report page after fake payment
+      // Navigate to receipt page with payment details
+      navigate("/receipt", { 
+        state: { 
+          cart, 
+          totalPrice, 
+          reportCost, 
+          finalTotalPrice,
+          fromMedicineDispensing,
+          paymentDate: new Date().toLocaleDateString(),
+          paymentTime: new Date().toLocaleTimeString()
+        } 
+      });
     }, 1000); // wait 1 second to mimic processing
   };
 
@@ -27,12 +42,15 @@ const PaymentGate = () => {
 
         <div className="text-center max-w-sm">
           <h2 className="text-lg font-semibold text-gray-900 mb-2">
-            Your report is{" "}
-            <span className="text-[#E85C25] font-bold">Ready!</span>
+            {fromMedicineDispensing ? (
+              <>Complete your <span className="text-[#E85C25] font-bold">Payment!</span></>
+            ) : (
+              <>Your report is <span className="text-[#E85C25] font-bold">Ready!</span></>
+            )}
           </h2>
 
           <p className="text-gray-700 text-sm mb-6">
-            Please complete the payment of ₹500 to access your report.
+            Please complete the payment of ₹{finalTotalPrice} to proceed.
           </p>
 
           <button
