@@ -19,6 +19,8 @@ export default function CustomerDetails() {
     gender: "",
   });
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const tOut = setTimeout(() => setSlideUp(true), 20);
     return () => clearTimeout(tOut);
@@ -29,9 +31,26 @@ export default function CustomerDetails() {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const validateForm = () => {
+    let newErrors = {};
+
+    if (!form.name.trim()) newErrors.name = "Name is required";
+    if (!form.age || form.age <= 0) newErrors.age = "Enter a valid age";
+    if (!form.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
+      newErrors.email = "Enter a valid email";
+    if (!form.phone.match(/^\d{10}$/))
+      newErrors.phone = "Enter a valid 10-digit phone number";
+    if (!form.gender) newErrors.gender = "Please select gender";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleProceed = () => {
-    update({ patient: form }); // Save to global context
-    navigate("/two-options");
+    if (validateForm()) {
+      update({ patient: form }); // Save to global context
+      navigate("/two-options");
+    }
   };
 
   return (
@@ -61,6 +80,7 @@ export default function CustomerDetails() {
               placeholder={t("enterName")}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
+            {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
           </div>
 
           {/* Age */}
@@ -73,6 +93,7 @@ export default function CustomerDetails() {
               placeholder={t("enterAge")}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
+            {errors.age && <p className="text-red-500 text-sm">{errors.age}</p>}
           </div>
 
           {/* Email */}
@@ -85,6 +106,7 @@ export default function CustomerDetails() {
               placeholder={t("enterEmail")}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
           </div>
 
           {/* Phone */}
@@ -97,6 +119,7 @@ export default function CustomerDetails() {
               placeholder={t("enterPhone")}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
+            {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
           </div>
 
           {/* Gender */}
@@ -116,6 +139,7 @@ export default function CustomerDetails() {
                 </label>
               ))}
             </div>
+            {errors.gender && <p className="text-red-500 text-sm">{errors.gender}</p>}
           </div>
 
           {/* Proceed button */}
