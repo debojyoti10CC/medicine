@@ -12,6 +12,7 @@ import OxygenPulse from "./pages/OxygenPulse.jsx";
 import BodyTemperature from "./pages/BodyTemperature.jsx"; // ✅ add .jsx for consistency
 import Report from "./pages/Report.jsx";
 import Checkout from "./pages/Checkout.jsx";
+import Receipt from "./pages/Receipt.jsx";
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
       <Route path="/eyesight" element={<EyeSight />} /> {/* ✅ lowercase */}
       <Route path="/report" element={<Report />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/receipt" element={<Receipt />} />
     </Routes>
   );
 }

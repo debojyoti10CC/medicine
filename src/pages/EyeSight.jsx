@@ -69,7 +69,15 @@ const handleSubmit = () => {
   update({
     vitals: { leftEye: leftEyeLine, rightEye: rightEyeLine },
   });
-  navigate("/payment");
+  navigate("/payment", {
+    state: {
+      cart: [],
+      totalPrice: 0,
+      reportCost: 500,
+      finalTotalPrice: 500,
+      fromMedicineDispensing: false
+    }
+  });
 };
 
 
